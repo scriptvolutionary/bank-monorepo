@@ -1,82 +1,82 @@
 {
-  "name": "bank",
-  "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/bank/src",
-  "projectType": "application",
-  "targets": {
-    "build": {
-      "executor": "@nrwl/webpack:webpack",
-      "outputs": ["{options.outputPath}"],
-      "defaultConfiguration": "production",
-      "options": {
-        "compiler": "babel",
-        "outputPath": "dist/apps/bank",
-        "index": "apps/bank/src/index.html",
-        "baseHref": "/",
-        "main": "apps/bank/src/main.tsx",
-        "polyfills": "apps/bank/src/polyfills.ts",
-        "tsConfig": "apps/bank/tsconfig.app.json",
-        "assets": ["apps/bank/src/favicon.ico", "apps/bank/src/assets"],
-        "styles": ["apps/bank/src/styles.scss"],
-        "scripts": [],
-        "webpackConfig": "@nrwl/react/plugins/webpack"
-      },
-      "configurations": {
-        "development": {
-          "extractLicenses": false,
-          "optimization": false,
-          "sourceMap": true,
-          "vendorChunk": true
-        },
-        "production": {
-          "fileReplacements": [
-            {
-              "replace": "apps/bank/src/environments/environment.ts",
-              "with": "apps/bank/src/environments/environment.prod.ts"
-            }
-          ],
-          "optimization": true,
-          "outputHashing": "all",
-          "sourceMap": false,
-          "namedChunks": false,
-          "extractLicenses": true,
-          "vendorChunk": false
-        }
-      }
-    },
-    "serve": {
-      "executor": "@nrwl/webpack:dev-server",
-      "defaultConfiguration": "development",
-      "options": {
-        "buildTarget": "bank:build",
-        "hmr": true,
-        "proxyConfig": "apps/bank/proxy.conf.json"
-      },
-      "configurations": {
-        "development": {
-          "buildTarget": "bank:build:development"
-        },
-        "production": {
-          "buildTarget": "bank:build:production",
-          "hmr": false
-        }
-      }
-    },
-    "lint": {
-      "executor": "@nrwl/linter:eslint",
-      "outputs": ["{options.outputFile}"],
-      "options": {
-        "lintFilePatterns": ["apps/bank/**/*.{ts,tsx,js,jsx}"]
-      }
-    },
-    "test": {
-      "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/apps/bank"],
-      "options": {
-        "jestConfig": "apps/bank/jest.config.ts",
-        "passWithNoTests": true
-      }
-    }
-  },
-  "tags": []
+	"name": "bank",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"sourceRoot": "apps/bank/src",
+	"projectType": "application",
+	"targets": {
+		"build": {
+			"executor": "@nrwl/webpack:webpack",
+			"outputs": ["{options.outputPath}"],
+			"defaultConfiguration": "production",
+			"options": {
+				"compiler": "babel",
+				"outputPath": "dist/apps/bank",
+				"index": "apps/bank/src/index.html",
+				"baseHref": "/",
+				"main": "apps/bank/src/main.tsx",
+				"polyfills": "apps/bank/src/polyfills.ts",
+				"tsConfig": "apps/bank/tsconfig.app.json",
+				"assets": ["apps/bank/src/favicon.ico", "apps/bank/src/assets"],
+				"styles": ["apps/bank/src/styles.scss"],
+				"scripts": [],
+				"webpackConfig": "@nrwl/react/plugins/webpack"
+			},
+			"configurations": {
+				"development": {
+					"extractLicenses": false,
+					"optimization": false,
+					"sourceMap": true,
+					"vendorChunk": true
+				},
+				"production": {
+					"fileReplacements": [
+						{
+							"replace": "apps/bank/src/environments/environment.ts",
+							"with": "apps/bank/src/environments/environment.prod.ts"
+						}
+					],
+					"optimization": true,
+					"outputHashing": "all",
+					"sourceMap": false,
+					"namedChunks": false,
+					"extractLicenses": true,
+					"vendorChunk": false
+				}
+			}
+		},
+		"serve": {
+			"executor": "@nrwl/webpack:dev-server",
+			"defaultConfiguration": "development",
+			"options": {
+				"buildTarget": "bank:build",
+				"hmr": true,
+				"proxyConfig": "apps/bank/proxy.conf.json"
+			},
+			"configurations": {
+				"development": {
+					"buildTarget": "bank:build:development"
+				},
+				"production": {
+					"buildTarget": "bank:build:production",
+					"hmr": false
+				}
+			}
+		},
+		"lint": {
+			"executor": "@nrwl/linter:eslint",
+			"outputs": ["{options.outputFile}"],
+			"options": {
+				"lintFilePatterns": ["apps/bank/**/*.{ts,tsx,js,jsx}"]
+			}
+		},
+		"test": {
+			"executor": "@nrwl/jest:jest",
+			"outputs": ["coverage/apps/bank"],
+			"options": {
+				"jestConfig": "apps/bank/jest.config.ts",
+				"passWithNoTests": true
+			}
+		}
+	},
+	"tags": []
 }

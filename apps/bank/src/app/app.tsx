@@ -1,28 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import { Message } from '@bank-monorepo/api-interfaces';
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import 'tw-elements'
 
-export const App = () => {
-  const [m, setMessage] = useState<Message>({ message: '' });
+import IndexPage from '../pages/IndexPage/IndexPage'
 
-  useEffect(() => {
-    fetch('/api')
-      .then((r) => r.json())
-      .then(setMessage);
-  }, []);
+const pages = [{ path: '/', element: <IndexPage /> }]
 
-  return (
-    <>
-      <div style={{ textAlign: 'center' }}>
-        <h1>Welcome to bank!</h1>
-        <img
-          width="450"
-          src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png"
-          alt="Nx - Smart, Fast and Extensible Build System"
-        />
-      </div>
-      <div>{m.message}</div>
-    </>
-  );
-};
-
-export default App;
+export function App() {
+	return (
+		<BrowserRouter>
+			<Routes>
+				{pages?.map(p => (
+					<Route path={p?.path} element={p?.element} key={p?.path} />
+				))}
+			</Routes>
+		</BrowserRouter>
+	)
+}
