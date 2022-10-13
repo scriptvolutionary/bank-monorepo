@@ -1,14 +1,19 @@
+import { Button } from './Button'
+
 type ReadResultInputProps = {
+	href?: string
 	label: string
+	subLabel: string
 	value: string | number | readonly string[] | undefined
+	onClick?: React.MouseEventHandler<HTMLButtonElement> | undefined
 }
 
-export function ReadResultInput({ label, value }: ReadResultInputProps) {
+export function ReadResultInput({ href, label, subLabel, value, onClick }: ReadResultInputProps) {
 	return (
-		<div className='flex flex-col items-start'>
+		<div className='flex flex-col items-end'>
 			<h5 className='mb-2 text-2xl font-semibold'>{label}</h5>
 			<label htmlFor='input-sum' className='form-label mb-2 inline-block text-slate-300'>
-				Доход:
+				{subLabel}
 			</label>
 			<div className='input-group relative mb-4 flex w-full flex-wrap items-stretch'>
 				<input
@@ -27,6 +32,7 @@ export function ReadResultInput({ label, value }: ReadResultInputProps) {
 					руб
 				</button>
 			</div>
+			{onClick && <Button href={href} label='Рассчитать кредит' onClick={onClick} />}
 		</div>
 	)
 }

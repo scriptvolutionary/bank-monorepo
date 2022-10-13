@@ -82,6 +82,46 @@ export default function IndexPage() {
 		return Math.round(res)
 	}
 
+	const [creditSum, setCreditSum] = useState(0)
+	const [creditTerm, setCreditTerm] = useState(0)
+
+	const credit = (percent: number) => {
+		let res = 0
+		res = ((creditSum / creditTerm) * 10) / percent
+
+		return Math.round(res)
+	}
+
+	const calc = (percent: number) => {
+		const payments = credit(percent)
+		const debt = creditSum / creditTerm
+		const percents = payments - debt
+		let remaining = credit(percent) * creditTerm
+
+		const listPay = []
+		const listDeb = []
+		const listPer = []
+		const listRem = []
+		const nums = []
+		const months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']
+		const year = 2022
+		let i = 1
+
+		const arrr = []
+
+		const arrYear = []
+
+		while (remaining > 0) {
+			remaining -= credit(percent)
+
+			listPay.push(Math.round(payments))
+			listDeb.push(Math.round(debt))
+			listPer.push(Math.round(percents))
+			listRem.push(Math.round(remaining))
+			nums.push(i++)
+		}
+	}
+
 	return (
 		<>
 			<Header />
@@ -137,9 +177,9 @@ export default function IndexPage() {
 								</div>
 								<div className='block w-full max-w-md rounded-md bg-slate-800 text-center text-white'>
 									<div className='flex w-full flex-col gap-8 p-8'>
-										<ReadResultInput label='Оптимальный' value={income(percentOptimal)} />
-										<ReadResultInput label='Стабильный' value={income(percentStable)} />
-										<ReadResultInput label='Стандартный' value={income(percentStandart)} />
+										<ReadResultInput label='Оптимальный' value={income(percentOptimal)} subLabel='Доход:' />
+										<ReadResultInput label='Стабильный' value={income(percentStable)} subLabel='Доход:' />
+										<ReadResultInput label='Стандартный' value={income(percentStandart)} subLabel='Доход:' />
 										<Button href='#compare' label='Сравнить параметры' />
 									</div>
 								</div>
@@ -155,6 +195,117 @@ export default function IndexPage() {
 									<CreditVariantCard label={v?.label} content={v?.content} description={v?.description} percent={v?.percent} />
 								))}
 							</div>
+						</div>
+					</div>
+				</section>
+				<section id='credit-calc' className='h-screen w-screen'>
+					<div className='container mx-auto flex h-full flex-col justify-center py-24'>
+						<div className='flex flex-col items-center justify-center gap-16'>
+							<div className='flex w-full place-items-center items-center justify-center gap-8'>
+								<div className='block w-full max-w-md rounded-md border border-slate-700 bg-slate-900 text-center text-white'>
+									<p className='border-b border-slate-700 py-4 px-6 text-base font-semibold uppercase'>Рассчитать кредит</p>
+									<div className='flex w-full flex-col gap-8 p-8'>
+										<IncomeCalcInput
+											id='input-sum'
+											label='Сумма'
+											placeholder='Введите сумму'
+											onChange={e => setCreditSum(parseInt(e.target.value))}
+											btnId='button-sum'
+											type='руб'
+										/>
+										<IncomeCalcInput
+											id='input-term'
+											label='Срок'
+											placeholder='Введите срок'
+											onChange={e => setCreditTerm(parseInt(e.target.value))}
+											btnId='button-term'
+											type='дн'
+										/>
+									</div>
+								</div>
+								<div className='block w-full max-w-md rounded-md bg-slate-800 text-center text-white'>
+									<div className='flex w-full flex-col gap-8 p-8'>
+										<ReadResultInput
+											label='Оптимальный'
+											value={credit(percentOptimal)}
+											subLabel='Ежемесячный платеж:'
+											href='#remaining'
+											onClick={() => calc(percentOptimal)}
+										/>
+										<ReadResultInput
+											label='Стабильный'
+											value={credit(percentStable)}
+											subLabel='Ежемесячный платеж:'
+											href='#remaining'
+											onClick={() => calc(percentStable)}
+										/>
+										<ReadResultInput
+											label='Стандартный'
+											value={credit(percentStandart)}
+											subLabel='Ежемесячный платеж:'
+											href='#remaining'
+											onClick={() => calc(percentStandart)}
+										/>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+				<section id='remaining' className='h-screen w-screen'>
+					<div className='container mx-auto flex h-full flex-col justify-center py-24'>
+						<div className='flex flex-col items-center justify-center gap-16 overflow-hidden'>
+							<table className='w-2/3 bg-slate-900 text-white'>
+								<thead className='border-b border-slate-700 bg-blue-600 text-white'>
+									<tr>
+										<th scope='col' className='px-6 py-4 text-left text-sm font-medium'>
+											Название
+										</th>
+										<th scope='col' className='px-6 py-4 text-left text-sm font-medium'>
+											Доход
+										</th>
+										<th scope='col' className='px-6 py-4 text-left text-sm font-medium'>
+											Сумма к концу срока
+										</th>
+										<th scope='col' className='px-6 py-4 text-left text-sm font-medium'>
+											Ставка
+										</th>
+										<th scope='col' className='px-6 py-4 text-left text-sm font-medium'>
+											Вклад
+										</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr className='border-b border-slate-700 text-white transition duration-300 ease-in-out hover:bg-slate-800'>
+										<td className='whitespace-nowrap px-6 py-4 text-sm font-medium'>Оптимальный</td>
+										<td className='whitespace-nowrap px-6 py-4 text-sm font-light '>{income(percentOptimal)}</td>
+										<td className='whitespace-nowrap px-6 py-4 text-sm font-light '>{incomeResult(percentOptimal)}</td>
+										<td className='whitespace-nowrap px-6 py-4 text-sm font-light '>8%</td>
+										<td className='whitespace-nowrap px-6 py-4 text-sm font-light '>
+											<Button label='Открыть' />
+										</td>
+									</tr>
+									<tr className='border-b border-slate-700 text-white transition duration-300 ease-in-out hover:bg-slate-800'>
+										<td className='whitespace-nowrap px-6 py-4 text-sm font-medium'>Стабильный</td>
+										<td className='whitespace-nowrap px-6 py-4 text-sm font-light '>{income(percentStable)}</td>
+										<td className='whitespace-nowrap px-6 py-4 text-sm font-light '>{incomeResult(percentStable)}</td>
+										<td className='whitespace-nowrap px-6 py-4 text-sm font-light '>8%</td>
+										<td className='whitespace-nowrap px-6 py-4 text-sm font-light '>
+											<Button label='Открыть' />
+										</td>
+									</tr>
+									<tr className='border-b border-slate-700 text-white transition duration-300 ease-in-out hover:bg-slate-800'>
+										<td className='whitespace-nowrap px-6 py-4 text-sm font-medium'>Стандартный</td>
+										<td className='whitespace-nowrap px-6 py-4 text-sm font-light '>{income(percentStandart)}</td>
+										<td className='whitespace-nowrap px-6 py-4 text-sm font-light '>{incomeResult(percentStandart)}</td>
+										<td className='whitespace-nowrap px-6 py-4 text-sm font-light '>8%</td>
+										<td className='whitespace-nowrap px-6 py-4 text-sm font-light '>
+											<Button label='Открыть' />
+										</td>
+									</tr>
+								</tbody>
+							</table>
+							<Button label='Сформировать выписку' />
 						</div>
 					</div>
 				</section>
